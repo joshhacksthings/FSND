@@ -251,7 +251,7 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 404,
-            "message": "resource not found"
+            "message": "Error! Route not found."
         }), 404
 
     @app.errorhandler(422)
@@ -264,7 +264,7 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 422,
-            "message": "unprocessable"
+            "message": "Error! Request could not be processed"
         }), 422
 
     @app.errorhandler(400)
@@ -277,7 +277,7 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 400,
-            "message": "bad request"
+            "message": "Error! Bad Request"
         }), 400
 
     return app
