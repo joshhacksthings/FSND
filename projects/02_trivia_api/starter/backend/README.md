@@ -66,29 +66,6 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-REVIEW_COMMENT
-```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
-
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
-
-GET '/categories'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
-- Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
-
-```
-
 
 ## Testing
 To run the tests, run
@@ -97,4 +74,157 @@ dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
 python test_flaskr.py
+```
+
+## API
+
+### Endpoints
+- GET `\categories`
+- GET `\questions?page=<page_number>`
+- DELETE `/questions/<question_id>`
+- POST `/questions`
+- POST `/questions/search`
+- GET `/categories/<int:category_id>/questions`
+- POST `/quizzes`
+
+
+### Examples
+
+GET `\categories` 
+Fetches a dictionary of all available categories
+- *Request arguments:* none 
+- *Example response:*  
+```
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "success": true
+}
+```
+
+GET `\questions?page=<page_number>` 
+Fetches a paginated dictionary of questions of all available categories
+- *Request arguments (optional):* page:int 
+- *Example response:*  
+ ``` {
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Josh", 
+      "category": 1, 
+      "difficulty": 10, 
+      "id": 7, 
+      "question": "What is my name?"
+    },  
+    {
+      "answer": "Also Josh", 
+      "category": 1, 
+      "difficulty": 10, 
+      "id": 17, 
+      "question": "What is my favorite color? (yes this is science)"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 2
+}
+```
+
+DELETE `/questions/<question_id>`
+Delete an existing questions from the repository of available questions
+- *Request arguments:* question_id:int 
+- *Example response:* 
+```
+{
+  "deleted": "17", 
+  "success": true
+}
+```
+
+POST `/questions`
+Add a new question to the repository of available questions
+- *Request arguments:* {question:string, answer:string, difficulty:int, category:string}
+- *Example response:* 
+```
+{
+  "created": 39, 
+  "success": true
+}
+```
+POST `/questions/search`
+Fetches all questions where a substring matches the search term (not case-sensitive)
+- *Request arguments:* {searchTerm:string}
+- *Example response:*
+```
+{
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Science", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 9, 
+      "question": "What is the coolest subject?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
+}
+```
+
+GET `/categories/<int:category_id>/questions`
+Fetches a dictionary of questions for the specified category
+- *Request argument:* category_id:int
+- *Example response:*
+```
+{
+  "current_category": 1, 
+  "questions": [
+    {
+      "answer": "Space", 
+      "category": 1, 
+      "difficulty": 2, 
+      "id": 10, 
+      "question": "What is the final frontier?"
+    }, 
+    {
+      "answer": "Josh", 
+      "category": 1, 
+      "difficulty": 9, 
+      "id": 24, 
+      "question": "Who is a scientist?"
+    }, 
+  ], 
+  "success": true, 
+  "total_questions": 2
+}
+```
+POST `/quizzes`
+Fetches one random question within a specified category. Previously asked questions are not asked again. 
+- *Request body:* {previous_questions: arr, quiz_category: {id:int, type:string}}
+- *Example response*: 
+```
+{
+  "question": {
+    "answer": "42", 
+    "category": 2, 
+    "difficulty": 2, 
+    "id": 22, 
+    "question": "What is the meaning of life?"
+  }, 
+  "success": true
+}
 ```
