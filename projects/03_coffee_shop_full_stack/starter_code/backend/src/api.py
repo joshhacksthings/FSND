@@ -29,15 +29,15 @@ def get_drinks():
         or appropriate status code indicating reason for failure
 
     """
-    # try:
-    drinks = Drink.query.all()
+    try:
+        drinks = Drink.query.all()
 
-    return jsonify({
-        'success': True,
-        'drinks': [drink.short() for drink in drinks]
-    })
-    # except:
-    #     abort(404)
+        return jsonify({
+            'success': True,
+            'drinks': [drink.short() for drink in drinks]
+        })
+    except:  # NOQA
+        abort(404)
 
 
 @app.route("/drinks-detail")
@@ -57,7 +57,7 @@ def get_drink_detail(jwt):
             'success': True,
             'drinks': [drink.long() for drink in drinks]
         })
-    except:
+    except:  # NOQA
         abort(404)
 
 
@@ -90,7 +90,7 @@ def add_drink(jwt):
             'drinks': [drink.long()],
         })
 
-    except:
+    except:  # NOQA
         abort(422)
 
 
@@ -127,7 +127,7 @@ def update_drink(jwt, id):
                 'success': True,
                 'drinks': [drink.long()]
             })
-        except:
+        except:  # NOQA
             abort(422)
     else:
         abort(404)
@@ -154,7 +154,7 @@ def delete_drink(jwt, id):
                 'success': True,
                 'delete': id
             })
-        except:
+        except:  # NOQA
             abort(422)
     else:
         abort(404)
@@ -167,10 +167,10 @@ Example error handling for unprocessable entity
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
-                    "success": False, 
-                    "error": 422,
-                    "message": "unprocessable"
-                    }), 422
+        "success": False,
+        "error": 422,
+        "message": "unprocessable"
+    }), 422
 
 
 @app.errorhandler(404)
